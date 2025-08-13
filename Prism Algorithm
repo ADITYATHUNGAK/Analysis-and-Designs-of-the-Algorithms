@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void main()
+{
+    int i, j, k, m, source;
+    int w[10][10];       // Weight/cost matrix
+    int visited[10];     // Visited vertex tracker
+    int minwt, totalcost = 0, u = 0, v = 0;
+
+    // Input number of vertices
+    printf("Number of the vertices/Nodes in the graph:\n");
+    scanf("%d", &m);
+
+    // Input cost/weight matrix
+    printf("Enter the weight/cost relation:\n");
+    for (i = 1; i <= m; i++)
+        for (j = 1; j <= m; j++)
+            scanf("%d", &w[i][j]);
+
+    // Input source vertex
+    printf("Enter the source vertex to be started from:\n");
+    scanf("%d", &source);
+
+    // Initialize visited array
+    for (i = 1; i <= m; i++)
+        visited[i] = 0;
+
+    visited[source] = 1;
+
+    printf("Minimum weight edges selected for the spanning tree:\n");
+
+    // Repeat for (m-1) edges
+    for (k = 1; k <= m; k++)
+    {
+        minwt = 999; // Set high initial weight
+
+        // Find the minimum edge from visited to unvisited vertex
+        for (i = 1; i <= m; i++)
+        {
+            if (visited[i] == 1)
+            {
+                for (j = 1; j <= m; j++)
+                {
+                    if (visited[j] != 1 && w[i][j] < minwt)
+                    {
+                        u = i;
+                        v = j;
+                        minwt = w[i][j];
+                    }
+                }
+            }
+        }
+
+        totalcost += minwt;
+        visited[v] = 1; // Mark vertex as visited
+        printf("%d ---- %d  cost = %d\n", u, v, minwt);
+    }
+
+    printf("The total cost of the minimum spanning tree = %d\n", totalcost);
+}
