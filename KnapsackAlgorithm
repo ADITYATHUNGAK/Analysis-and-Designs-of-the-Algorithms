@@ -1,0 +1,74 @@
+#include <stdio.h>
+#define MAX 100
+
+int getNextItem(double weight[], double value[], double ratio[], int nitems)
+{
+    int i, index = -1;
+    double highest = 0;
+
+    for (i = 0; i < nitems; i++)
+    {
+        if (ratio[i] > highest)
+        {
+            highest = ratio[i];
+            index = i;
+        }
+    }
+    return index;
+}
+
+double computeMaxValue(double cw, double weight[], double value[], double ratio[], int nitems)
+{
+    double cuv = 0, CW = 0;
+
+    printf("Items considered are:\n");
+    while (CW < cw)
+    {
+        int item = getNextItem(weight, value, ratio, nitems);
+        if (item < 0)
+            break;
+
+        printf("Item %d\n", item + 1);
+
+        if ((CW + weight[item]) <= cw)
+        {
+            CW += weight[item];
+            cuv += value[item];
+            ratio[item] = 0;
+        }
+        else
+        {
+            cuv += ratio[item] * (cw - CW);
+            CW = cw;
+        }
+    }
+    return cuv;
+}
+
+int main()
+{
+    int i, nitems;
+    double w, weight[MAX], value[MAX], ratio[MAX];
+
+    printf("Enter the number of items: ");
+    scanf("%d", &nitems);
+
+    printf("Enter the weights of the items:\n");
+    for (i = 0; i < nitems; i++)
+        scanf("%lf", &weight[i]);
+
+    printf("Enter the values/profits of the items:\n");
+    for (i = 0; i < nitems; i++)
+        scanf("%lf", &value[i]);
+
+    for (i = 0; i < nitems; i++)
+        ratio[i] = value[i] / weight[i];
+
+    printf("Enter the Knapsack capacity: ");
+    scanf("%lf", &w);
+
+    printf("The maximum value for capacity %.2lf is %.2lf\n",
+           w, computeMaxValue(w, weight, value, ratio, nitems));
+
+    return 0;
+}
