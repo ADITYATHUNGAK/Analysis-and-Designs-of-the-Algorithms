@@ -23,3 +23,27 @@ int Knapsack(int W, int wt[], int val[], int n)
     }
     return V[n][W];
 }
+
+int max(int a, int b)
+{
+    return (a > b) ? a : b;
+}
+
+int main()
+{
+    int W, n, wt[MAX_ITEMS], val[MAX_ITEMS];
+
+    printf("Enter the number of the items: ");
+    scanf("%d", &n);
+
+    printf("Enter the max capacity: ");
+    scanf("%d", &W);
+
+    printf("Enter the weight and value of the items:\n");
+    for (int i = 1; i <= n; i++)
+        scanf("%d %d", &wt[i], &val[i]);
+
+    printf("The maximum capacity profit is: %d\n", Knapsack(W, wt, val, n));
+
+    return 0;
+}
