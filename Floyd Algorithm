@@ -1,0 +1,60 @@
+#include <stdio.h>
+#define MAX 20
+
+int min(int a, int b)
+{
+    return (a < b) ? a : b;
+}
+
+void Floyd(int n, int d[MAX][MAX], int W[MAX][MAX])
+{
+    int i, j, k;
+
+    // Initialize distance matrix
+    for (i = 1; i <= n; i++)
+        for (j = 1; j <= n; j++)
+            d[i][j] = W[i][j];
+
+    // Floyd-Warshall core algorithm
+    for (k = 1; k <= n; k++)
+        for (i = 1; i <= n; i++)
+            for (j = 1; j <= n; j++)
+                d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+
+    // Print neatly formatted matrix
+    printf("\nAll Pairs Shortest Path Matrix:\n");
+    printf("      "); // spacing for header
+    for (j = 1; j <= n; j++)
+        printf("%5d", j);
+    printf("\n");
+
+    printf("      ");
+    for (j = 1; j <= n; j++)
+        printf("-----");
+    printf("\n");
+
+    for (i = 1; i <= n; i++)
+    {
+        printf("%3d |", i); // row label
+        for (j = 1; j <= n; j++)
+            printf("%5d", d[i][j]);
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int d[MAX][MAX], W[MAX][MAX];
+    int i, j, n;
+
+    printf("Enter the number of nodes/vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter the weight/cost adjacency matrix:\n");
+    for (i = 1; i <= n; i++)
+        for (j = 1; j <= n; j++)
+            scanf("%d", &W[i][j]);
+
+    Floyd(n, d, W);
+    return 0;
+}
