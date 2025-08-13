@@ -1,0 +1,25 @@
+#include <stdio.h>
+#define MAX_ITEMS 10
+
+int Knapsack(int W, int wt[], int val[], int n);
+int max(int a, int b);
+
+int Knapsack(int W, int wt[], int val[], int n)
+{
+    int i, j;
+    int V[MAX_ITEMS][W + 1];
+
+    for (i = 0; i <= n; i++)
+    {
+        for (j = 0; j <= W; j++)
+        {
+            if (i == 0 || j == 0)
+                V[i][j] = 0;
+            else if (j - wt[i] < 0)
+                V[i][j] = V[i - 1][j];
+            else
+                V[i][j] = max(V[i - 1][j], val[i] + V[i - 1][j - wt[i]]);
+        }
+    }
+    return V[n][W];
+}
