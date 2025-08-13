@@ -1,0 +1,64 @@
+#include <stdio.h>
+#define MAX 20
+
+int x[MAX];         // Array to track solution (1 if included)
+int s[MAX];         // Input array
+int d, flag = 0;    // d = target sum, flag = solution found
+
+// Function to calculate subset sums
+void SumofSub(int m, int k, int r) {
+    int i;
+    x[k] = 1;
+
+    // If current sum + element equals target
+    if (m + s[k] == d) {
+        flag = 1;
+        printf("{ ");
+        for (i = 1; i <= k; i++) {
+            if (x[i] == 1)
+                printf("%d ", s[i]);
+        }
+        printf("}\n");
+    }
+    // If including current element doesn’t exceed target
+    else if ((m + s[k] + s[k + 1]) <= d) {
+        SumofSub(m + s[k], k + 1, r - s[k]);
+    }
+
+    // If skipping current element is still worth trying
+    if ((m + r - s[k] >= d) && (m + s[k + 1] <= d)) {
+        x[k] = 0;
+        SumofSub(m, k + 1, r - s[k]);
+    }
+}
+
+int main() {
+    int n, sum = 0;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter the elements in ascending order:\n");
+    for (int i = 1; i <= n; i++) {
+        scanf("%d", &s[i]);
+        sum += s[i];
+    }
+
+    printf("Enter the required sum (d): ");
+    scanf("%d", &d);
+
+    // Check if solution is possible
+    if (sum < d || s[1] > d) {
+        printf("The given problem instance does not have a solution.\n");
+        return 0;
+    }
+
+    printf("Subsets whose sum is %d:\n", d);
+    SumofSub(0, 1, sum);
+
+    if (flag == 0) {
+        printf("No subset possible.\n");
+    }
+
+    return 0;
+}
