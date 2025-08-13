@@ -1,0 +1,49 @@
+#include <stdio.h>
+#define MAX 20
+
+void Warshall(int n, int a[MAX][MAX])
+{
+    int i, j, k;
+
+    // Warshall algorithm
+    for (k = 1; k <= n; k++)
+        for (i = 1; i <= n; i++)
+            for (j = 1; j <= n; j++)
+                a[i][j] = (a[i][j] || (a[i][k] && a[k][j]));
+
+    // Print neatly formatted matrix
+    printf("\nTransitive Closure Matrix:\n");
+    printf("      ");
+    for (j = 1; j <= n; j++)
+        printf("%5d", j);
+    printf("\n");
+
+    printf("      ");
+    for (j = 1; j <= n; j++)
+        printf("-----");
+    printf("\n");
+
+    for (i = 1; i <= n; i++)
+    {
+        printf("%3d |", i);
+        for (j = 1; j <= n; j++)
+            printf("%5d", a[i][j]);
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int a[MAX][MAX], i, j, n;
+
+    printf("Enter the number of nodes/vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter the adjacency matrix (1 for edge, 0 for no edge):\n");
+    for (i = 1; i <= n; i++)
+        for (j = 1; j <= n; j++)
+            scanf("%d", &a[i][j]);
+
+    Warshall(n, a);
+    return 0;
+}
